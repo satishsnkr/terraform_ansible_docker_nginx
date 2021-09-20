@@ -17,6 +17,8 @@ resource "aws_instance" "app_vm" {
   # Ubuntu Linux 20.04 AMI , SSD Volume Type
   ami                         = var.ami
   instance_type               = "t2.micro"
+  subnet_id                   = module.vpc.public_subnets[0]
+  vpc_security_group_ids      = [aws_security_group.vm_sg.id]
 
   tags = {
     Name      = "tfdemo-ss"
@@ -34,6 +36,24 @@ module "vpc" {
   public_subnets  = var.vpc_public_subnets
 
   tags = {
-    createdBy = "<%=username%>"
+    Name      = "tfdemo-ss"
+    createdBy = "terrform-demo-ss"
+  }
+}
+
+resource "aws_security_group" "vm_sg" {
+  name          = var.tfdemo_sg
+  vpc_id        = module.vpc.vpc_id
+
+  tags = {
+    Name      = "tfdemo-ss"
+    createdBy = "terrform-demo-ss"
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${local.my_ip.ip}/32"]
   }
 }

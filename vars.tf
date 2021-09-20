@@ -30,3 +30,20 @@ variable "vpc_public_subnets" {
     type = list(string)
     default = ["10.0.101.0/24"]
 }
+
+variable "tfdemo_sg" {
+    description = "Security group to allow incoming connections"
+    type = string
+    default = "tfdemo-security-group"
+}
+
+locals {
+    my_ip = jsondecode(data.http.my_public_ip.body)
+}
+
+data "http" "my_public_ip" {
+    url = "https://ifconfig.co/json"
+    request_headers = {
+        Accept = "application/json"
+    }
+}
