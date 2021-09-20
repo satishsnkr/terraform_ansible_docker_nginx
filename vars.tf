@@ -1,5 +1,9 @@
-variable "access_key" {}
-variable "secret_key" {}
+variable "aws_access_key" {
+    description = "Provide your AWS ACCESS KEY ID:"
+}
+variable "aws_secret_key" {
+    description = "Provide your AWS SECRET ACCESS KEY:"
+}
 
 variable "region" {
     type = string
@@ -47,3 +51,9 @@ data "http" "my_public_ip" {
         Accept = "application/json"
     }
 }
+
+variable "tfdemo_ssh_public_key" {
+    type = string
+    description = "Provide your ssh public key from ~/.ssh/id_rsa.pub"
+}
+
