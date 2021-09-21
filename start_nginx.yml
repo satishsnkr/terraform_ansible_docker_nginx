@@ -1,0 +1,23 @@
+---
+- hosts: tfdemo
+
+  tasks:
+
+    - name: deploy nginx docker container
+      docker_container:
+        image: nginx:latest
+        name: nginx
+        state: started
+        auto_remove: true
+        ports:
+          - "8080:80"
+        volumes: 
+          - ./logs:/var/log/nginx/
+        healthcheck:
+          # Check if nginx server is healthy by curl'ing the server.
+          # If this fails or timeouts, the healthcheck fails.
+          test: ["CMD","curl --fail http://localhost:8080/ || exit 1"]
+          interval: 10s
+          timeout: 10s
+          retries: 3
+          start_period: 30s

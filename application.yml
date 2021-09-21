@@ -1,0 +1,10 @@
+---
+- hosts: tfdemo
+  become: yes
+  become_method: sudo
+
+# Playbook to install dependencies for docker and install docker 
+- import_playbook: install_docker.yml
+
+# Playbook to start the nginx server
+- import_playbook: start_nginx.yml
