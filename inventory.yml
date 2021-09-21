@@ -1,5 +1,5 @@
 tfdemo:
   hosts:
-    13.54.142.10:
+    0.0.0.0:
       ansible_ssh_extra_args: -o StrictHostKeyChecking=no
       ansible_user: ubuntu

@@ -88,6 +88,13 @@ The next step is to install the required softwares in the EC2 instance and deplo
 2. Run the ansible playbook using the below command
     - ansible-playbook -i inventory.yml application.yml
 
+3. To check the resource stats go to below links
+
+http://<public-ip>:8080/resource.html ( to Check the nginx stats)
+
+4. Use below command to curl the REST API
+curl http://<public-ip>:3000/resource
+
 ### Part 3: Tear down the application
 
 Run the below command to tear down the application.
