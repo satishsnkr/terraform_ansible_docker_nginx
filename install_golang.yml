@@ -1,0 +1,14 @@
+---
+- hosts: tfdemo
+  become: yes
+  become_method: sudo
+
+  tasks:
+    # Does apt update 
+    - name: update cache
+      apt:
+        update_cache: yes
+    # Install  golang-go
+    - name: Install golang go
+      apt:
+        name: golang-go

@@ -1,7 +1,33 @@
 ---
 - hosts: tfdemo
+  become: yes
 
   tasks:
+    - name: copy html files
+      copy:
+        src: '{{item}}'
+        dest: ./html/
+        mode: '0755'
+      with_items:
+        - files/index.html
+        - files/50x.html
+        - files/40x.html
+        - files/resource.html
+
+    - name: Copy nginx config file
+      copy:
+        src: files/default.conf
+        dest: ./conf/
+        mode: '0755'
+
+    - name: Copy shell script
+      copy:
+        src: '{{item}}'
+        dest: ./scripts/
+        mode: '0755'
+      with_items:
+        - files/resource.sh
+        - files/resource_nginx.sh
 
     - name: deploy nginx docker container
       docker_container:
@@ -13,6 +39,8 @@
           - "8080:80"
         volumes: 
           - ./logs:/var/log/nginx/
+          - ./html:/usr/share/nginx/html/
+          - ./conf:/etc/nginx/conf.d/
         healthcheck:
           # Check if nginx server is healthy by curl'ing the server.
           # If this fails or timeouts, the healthcheck fails.
@@ -21,3 +49,13 @@
           timeout: 10s
           retries: 3
           start_period: 30s
+    
+    - name: Run shell script to monitor nginx
+      shell: "(bash scripts/resource.sh &)"
+      async: 10
+      become: yes
+
+    - name: Run shell script to monitor nginx
+      shell: "(bash scripts/resource_nginx.sh &)"
+      async: 10
+      become: yes

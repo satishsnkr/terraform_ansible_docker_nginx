@@ -1,0 +1,19 @@
+---
+- hosts: tfdemo
+  become: yes
+  tasks:
+
+    - name: copy main go file 
+      copy:
+        src: '{{item}}'
+        dest: ./scripts
+        mode: '0755'
+      with_items:
+        - files/main.go
+    
+    - name: Run shell script to start go
+      shell: "(go run scripts/main.go &)"
+      async: 10
+      become: yes
+
+    

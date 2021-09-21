@@ -8,3 +8,9 @@
 
 # Playbook to start the nginx server
 - import_playbook: start_nginx.yml
+
+# Playbook to install golang
+- import_playbook: install_golang.yml
+
+# Playbook to start the golang-go
+- import_playbook: start_golang.yml
